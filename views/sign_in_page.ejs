@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="/css/sign_up_page.css">
+<div class="row mt-5">
+  <div class="col-md-4 m-auto">
+    <div class="card">
+      <div class="card-body">
+
+        <h2 class="card-title">
+          Sign in to your account
+        </h2>
+        <form class="row g-3 needs-validation mt-2" novalidate action="/auth/create-session" method="POST">
+            <div class="col-md-12 form-floating">
+              <input type="email" class="form-control" id="email-input" placeholder="test@example.com" required name="email">
+              <label for="email-input" class="form-label">Email id</label>
+              <div class="invalid-feedback" id="email-invalid">
+                <% if(flash.error.length > 0){ %>
+                <%= flash.error %>
+                <% } else { %>
+                Choose a valid email address
+                <% } %>
+              </div>
+            </div>
+            <div class="row-md-5">
+              <div class="col-md-12 form-floating">
+                <input type="password" class="form-control" id="password-input" placeholder="password" required name="password">
+                <label for="password-input" class="form-label">Password</label>
+                <div class="invalid-feedback" id="password-invalid">
+                  <% if(flash.error.length > 0){ %>
+                  <%= flash.error %>
+                  <% } else { %>
+                  Enter a password
+                  <% } %>
+                </div>
+                <p> <a href="/forgot-password-page" style="text-decoration: none; !important">Forgot password?</a></p>
+              </div>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-7">
+                <p> <a href="/register-page" style="text-decoration: none; !important">Create account</a></p>
+              </div>
+              <div class="col-md-5 text-end">
+                <button class="btn btn-primary ms-3" type="submit">Sign in</button>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/js/sign_in_page.js"></script>

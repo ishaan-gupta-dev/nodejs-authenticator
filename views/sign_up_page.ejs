@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="/css/sign_up_page.css">
+<div class="row mt-5">
+  <div class="col-md-4 m-auto">
+    <div class="card">
+      <div class="card-body">
+
+        <h2 class="card-title">
+          Create your Account
+        </h2>
+        <form class="row g-3 needs-validation mt-2" novalidate action="/auth/create-user" method="POST">
+          <div class="col-md-6 form-floating">
+            <input type="text" class="form-control" id="first-name-input" placeholder="First name" required name="first_name">
+            <label for="first-name-input" class="form-label">First name</label>
+            <div class="invalid-feedback">
+              Enter first name
+            </div>
+          </div>
+          <div class="col-md-6 form-floating">
+            <input type="text" class="form-control" id="last-name-input" placeholder="Last name" required name="last_name">
+            <label for="last-name-input" class="form-label">Last name</label>
+            <div class="invalid-feedback">
+              Enter last name
+            </div>
+          </div>
+          <div class="row-md-5">
+            <div class="col-md-12 form-floating">
+              <input type="email" class="form-control" id="email-input" placeholder="test@example.com" required name="email">
+              <label for="email-input" class="form-label">Email id</label>
+              <div class="invalid-feedback" id="email-invalid">
+                <% if (typeof errors.email_error_msg != 'undefined') { %>
+                <%= errors.email_error_msg %>
+                <% } else { %>
+                Choose a valid email address
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 form-floating">
+            <input type="password" class="form-control" id="password-input" placeholder="password" aria-describedby="password-empty" required name="password">
+            <label for="password-input" class="form-label">Password</label>
+            <div class="invalid-feedback" id="password-empty">
+              Enter a password
+            </div>
+            <div class="invalid-feedback" id="password-mismatch" style="display: none;">
+              Those passwords didn't match. Try again.
+            </div>
+            <div class="invalid-feedback" id="password-length-invalid" style="display: none;">
+              Use 8 characters or more for your password
+            </div>
+          </div>
+          <div class="col-md-6 form-floating">
+            <input type="password" class="form-control" id="confirm-password-input" placeholder="confirm-password" aria-describedby="confirm-password-empty" required name="confirm_password">
+            <label for="confirm-password-input" class="form-label">Confirm Password</label>
+            <div class="invalid-feedback" id="confirm-password-empty">
+              Confirm your password
+            </div>
+          </div>
+          <div class="row m-auto mt-5">
+            <div class="col-md-7">
+              <p> Already have an Account?</p>
+              <p> <a href="/login-page" style="text-decoration: none; !important">Sign in instead </a></p>
+            </div>
+            <div class="col-md-5 text-end">
+              <button class="btn btn-primary ms-3" type="submit" onclick="validatePassword()">Create Account</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/js/sign_up_page.js"></script>
