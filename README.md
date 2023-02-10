@@ -39,6 +39,8 @@ npm start
 
 Hosted on
 
+https://nodejs-authenticator.onrender.com/
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
