@@ -25,8 +25,8 @@ liveReloadServer.server.once("connection", () => {
 
 
 app.use(session({   // session details
-    name: 'bug-tracker-app',
-    secret: 'keyboard cat',
+    name: 'node-js-authenticator',
+    secret: process.env.session_secret,
     cookie: { maxAge: 60000 },
     saveUninitialized: false,
     resave: false,

@@ -45,6 +45,12 @@ https://nodejs-authenticator.onrender.com/
 
 To run this project, you will need to add the following environment variables to your .env file
 
+`DB_URL` - db url to connect to
+
+`port` - port nuumber on which the server runs
+
+`session_secret` - random key for session secret
+
 `client_id` - google api client id
 
 `client_secret` - google api client secret
