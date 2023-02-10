@@ -9,10 +9,10 @@ const User = require('../models/User');
 
 //------------ Environment variables ------------//
 const client_id = process.env.client_id;
-const auth_email_id = process.env.auth_email_id;
 const client_secret = process.env.client_secret;
-const refresh_token = process.env.refresh_token;
 const redirect_uris = process.env.redirect_uris;
+const refresh_token = process.env.refresh_token;
+const auth_email_id = process.env.auth_email_id;
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_RESET_KEY = process.env.JWT_RESET_KEY;
 
