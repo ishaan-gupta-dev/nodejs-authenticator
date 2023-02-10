@@ -11,7 +11,6 @@ if (emailInvalid == "Email ID not registered!") {
 var passwordInvalidDiv = document.getElementById("password-invalid");
 var passwordInvalid = document.getElementById("password-invalid").textContent.trim();
 if (passwordInvalid == "Incorrect Password!") {
-  console.log("working!")
   passwordInvalidDiv.style.display = "block";
 }
 

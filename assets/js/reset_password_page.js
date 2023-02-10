@@ -3,8 +3,6 @@ var confirmPasswordInput = document.getElementById('confirm-password-input');
 function validatePassword() { // validates password and shows error accordingly
     let password = passwordInput.value;
     let confirmPassword = confirmPasswordInput.value;
-    console.log("password = ", password);
-    console.log("confirm password = ", confirmPassword);
     if (password.length > 0 && password.length < 8) { // if password length < 8
         passwordInput.value = "";
         confirmPasswordInput.value = "";

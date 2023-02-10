@@ -85,7 +85,6 @@ module.exports.createUser = async function (req, res) { // creating a user
                         res.redirect('/login-page');
                     }
                     else {
-                        console.log('Mail sent : %s', info.response);
                         req.flash(
                             'success',
                             'Activation link sent to Email ID. Please activate to log in.'
@@ -231,7 +230,6 @@ exports.forgotPassword = (req, res) => { // forgot password controller
                             res.redirect('/forgot-password-page');
                         }
                         else {
-                            console.log('Mail sent : %s', info.response);
                             req.flash(
                                 'success',
                                 'Password reset link sent to email ID. Please follow the instructions.'
