@@ -25,7 +25,7 @@ A Complete authentication system which can be used as a starter code for creatin
   - If registered, sends the reset link to email else shows error that email is not registered.
   - On clicking the reset link, redirects to Reset password page.
 - Reset Password Page:
-  - Enter password and confrom password.
+  - Enter password and confirm password.
   - If password criteria matches, resets the password.
 - Flash messages after actions accordingly
 
