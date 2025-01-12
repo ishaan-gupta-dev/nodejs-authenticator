@@ -15,91 +15,209 @@ const refresh_token = process.env.refresh_token;
 const auth_email_id = process.env.auth_email_id;
 const JWT_KEY = process.env.JWT_KEY;
 const JWT_RESET_KEY = process.env.JWT_RESET_KEY;
+const APP_PASS_FOR_GMAIL = process.env.APP_PASS_FOR_GMAIL;
 
 
-module.exports.createUser = async function (req, res) { // creating a user
+// module.exports.createUser = async function (req, res) { // creating a user
+//     try {
+//         const { first_name, last_name, email, password, confirm_password } = req.body; // taking data from form body
+//         let errors = {}
+//         User.findOne({ email: email }).then(user => { // finding user in db
+//             if (user) { // email is already registered
+//                 errors.email_error_msg = "Email already registered";
+//                 res.render('sign_up_page', { // if already registered, send to sign up page
+//                     title: 'Node js Authentication | Register',
+//                     errors,
+//                     first_name,
+//                     last_name,
+//                     email,
+//                     password,
+//                     confirm_password,
+//                 });
+//             } else { // create the activation link and send to user
+//                 const oauth2Client = new OAuth2(
+//                     client_id,
+//                     client_secret,
+//                     redirect_uris,
+//                 );
+
+//                 oauth2Client.setCredentials({
+//                     refresh_token: refresh_token,
+//                 });
+//                 const accessToken = oauth2Client.getAccessToken()
+
+//                 const token = jwt.sign({ first_name, last_name, email, password }, JWT_KEY, { expiresIn: '10m' });
+//                 const CLIENT_URL = 'https://' + req.headers.host;
+//                 console.log("CLIENT_URL",CLIENT_URL)
+
+//                 const output = `
+//                 <h2>Please click on below link to activate your account</h2>
+//                 <p>${CLIENT_URL}/auth/activate/${token}</p>
+//                 <p><b>NOTE: </b> The above activation link expires in 10 minutes.</p>
+//                 `;
+
+//                 const transporter = nodemailer.createTransport({
+//                     service: 'gmail',
+//                     auth: {
+//                         type: "OAuth2",
+//                         user: auth_email_id,
+//                         clientId: client_id,
+//                         clientSecret: client_secret,
+//                         refreshToken: refresh_token,
+//                         accessToken: accessToken,
+//                     },
+//                 });
+
+//                 // send mail with defined transport object
+//                 const mailOptions = {
+//                     from: `Auth Admin ${auth_email_id}`, // sender address
+//                     to: email, // list of receivers
+//                     subject: "Account Verification: NodeJS Authenticator", // Subject line
+//                     generateTextFromHTML: true,
+//                     html: output, // html body
+//                 };
+
+//                 transporter.sendMail(mailOptions, (error, info) => {
+//                     if (error) {
+//                         console.log(error);
+//                         req.flash(
+//                             'error',
+//                             'Something went wrong on our end. Please register again.'
+//                         );
+//                         res.redirect('/login-page');
+//                     }
+//                     else {
+//                         req.flash(
+//                             'success',
+//                             'Activation link sent to Email ID. Please activate to log in.'
+//                         );
+//                         res.redirect('/login-page');
+//                     }
+//                 })
+
+//             }
+//         })
+//     } catch {
+//         console.log('Error in creating user, code=>', err);
+//         return;
+//     }
+// };
+
+
+module.exports.createUser = async function (req, res) {
+    const { first_name, last_name, email, password, confirm_password } = req.body;
+    let errors = {};
+
     try {
-        const { first_name, last_name, email, password, confirm_password } = req.body; // taking data from form body
-        let errors = {}
-        User.findOne({ email: email }).then(user => { // finding user in db
-            if (user) { // email is already registered
-                errors.email_error_msg = "Email already registered";
-                res.render('sign_up_page', { // if already registered, send to sign up page
-                    title: 'Node js Authentication | Register',
-                    errors,
-                    first_name,
-                    last_name,
-                    email,
-                    password,
-                    confirm_password,
-                });
-            } else { // create the activation link and send to user
-                const oauth2Client = new OAuth2(
-                    client_id,
-                    client_secret,
-                    redirect_uris,
-                );
+        // Check if user exists with the same email
+        const user = await User.findOne({ email });
+        if (user) {
+            errors.email_error_msg = "Email already registered";
+            return res.render('sign_up_page', {
+                title: 'Node js Authentication | Register',
+                errors,
+                first_name,
+                last_name,
+                email,
+                password,
+                confirm_password,
+            });
+        }
 
-                oauth2Client.setCredentials({
-                    refresh_token: refresh_token,
-                });
-                const accessToken = oauth2Client.getAccessToken()
+        // Create the activation link and send email
+        const token = jwt.sign({ first_name, last_name, email, password }, JWT_KEY, { expiresIn: '10m' });
+        const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+        const CLIENT_URL = `${protocol}://${req.headers.host}`;
+        console.log("CLIENT_URL",CLIENT_URL)
 
-                const token = jwt.sign({ first_name, last_name, email, password }, JWT_KEY, { expiresIn: '10m' });
-                const CLIENT_URL = 'http://' + req.headers.host;
+        const output = `
+            <h2>Please click on below link to activate your account</h2>
+            <p>${CLIENT_URL}/auth/activate/${token}</p>
+            <p><b>NOTE: </b> The above activation link expires in 10 minutes.</p>
+        `;
 
-                const output = `
-                <h2>Please click on below link to activate your account</h2>
-                <p>${CLIENT_URL}/auth/activate/${token}</p>
-                <p><b>NOTE: </b> The above activation link expires in 10 minutes.</p>
-                `;
+        const accessToken = await getAccessToken();
+        console.log("accessToken",accessToken)
+        const mailOptions = {
+            from: `Auth Admin <${auth_email_id}>`, 
+            to: email, 
+            subject: "Account Verification: NodeJS Authenticator", 
+            generateTextFromHTML: true,
+            html: output, 
+        };
 
-                const transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        type: "OAuth2",
-                        user: auth_email_id,
-                        clientId: client_id,
-                        clientSecret: client_secret,
-                        refreshToken: refresh_token,
-                        accessToken: accessToken,
-                    },
-                });
+        // const transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //         type: "OAuth2",
+        //         user: auth_email_id,
+        //         clientId: client_id,
+        //         clientSecret: client_secret,
+        //         refreshToken: refresh_token,
+        //         accessToken,
+        //     },
+        // });
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: auth_email_id,
+                pass: APP_PASS_FOR_GMAIL,
+            },
+        });
 
-                // send mail with defined transport object
-                const mailOptions = {
-                    from: `Auth Admin ${auth_email_id}`, // sender address
-                    to: email, // list of receivers
-                    subject: "Account Verification: NodeJS Authenticator", // Subject line
-                    generateTextFromHTML: true,
-                    html: output, // html body
-                };
+        await sendVerificationEmail(transporter, mailOptions);
 
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        console.log(error);
-                        req.flash(
-                            'error',
-                            'Something went wrong on our end. Please register again.'
-                        );
-                        res.redirect('/login-page');
-                    }
-                    else {
-                        req.flash(
-                            'success',
-                            'Activation link sent to Email ID. Please activate to log in.'
-                        );
-                        res.redirect('/login-page');
-                    }
-                })
-
-            }
-        })
-    } catch {
-        console.log('Error in creating user, code=>', err);
-        return;
+        req.flash('success', 'Activation link sent to Email ID. Please activate to log in.');
+        res.redirect('/login-page');
+    } catch (err) {
+        console.error('Error in creating user:', err);
+        req.flash('error', 'Something went wrong. Please try again.');
+        // res.redirect('/sign-up-page');
     }
 };
+
+// Helper function to get access token
+// Helper function to get access token with error handling
+async function getAccessToken() {
+    try {
+        const oauth2Client = new OAuth2(client_id, client_secret, redirect_uris);
+        oauth2Client.setCredentials({ refresh_token });
+
+        const { token } = await oauth2Client.getAccessToken();
+        if (!token) {
+            throw new Error('Failed to retrieve access token. Token is undefined or null.');
+        }
+
+        return token;
+    } catch (error) {
+        console.error('Error while fetching access token:', error);
+        console.error('Error Message while fetching access token:', error.message);
+
+        // Check for specific Google API errors
+        if (error.response && error.response.data) {
+            console.error('Google API Error Details:', error.response.data);
+        }
+
+        // Rethrow the error to allow the calling function to handle it
+        throw new Error(`Failed to get access token: ${error.message}`);
+    }
+}
+
+
+async function sendVerificationEmail(transporter, mailOptions) {
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                reject(error);
+            } else {
+                console.log('Email sent successfully:', info);
+                resolve(info);
+            }
+        });
+    });
+}
+
 
 module.exports.handleActivate = (req, res) => { // when user clicks on activation link, redirect to sign in  page
     const token = req.params.token;

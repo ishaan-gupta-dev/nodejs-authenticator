@@ -4,3 +4,4 @@
 # environment variables
 .env
 google-api-credentials.json
+pnpm-lock.yaml

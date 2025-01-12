@@ -24,6 +24,8 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => res.render('user_das
     first_name: req.user.first_name,
     last_name: req.user.last_name
 }));
+router.get('/privacy-policy', (req, res) => res.render('privacy_policy', { title: 'Node js Authenticator | Privacy Policy' })); // direct /login route to sign up page
+router.get('/terms-of-service', (req, res) => res.render('terms_of_service', { title: 'Node js Authenticator | Terms of Service' })); // direct /login route to sign up page
 router.use('/auth', require('./auth')); // direct /auth routes to auth folder 
 
 module.exports = router;

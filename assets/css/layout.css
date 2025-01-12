@@ -5,3 +5,62 @@ body {
   background-size: cover;
   overflow: hidden;
 }
+/* Add these to ensure scrolling works */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+header {
+  background-color: #007BFF;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.content {
+  padding: 20px;
+  flex-grow: 1; /* Ensures the content section grows and allows scrolling */
+  overflow-y: auto;
+  max-height: 80vh; /* Prevents the content from taking up all the screen space */
+}
+
+h1, h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+ul {
+  margin-bottom: 20px;
+}
+
+a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+

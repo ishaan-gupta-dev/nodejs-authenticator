@@ -16,7 +16,7 @@ db.on('error', console.error.bind(console, "Error connecting to MongoDB-developm
 
 // once db is connected
 db.once('open', function () {
-    console.log("Connected to Database - MongoDB-development");
+    console.log(`Connected to Database - MongoDB ${DB_URL}`);
 });
 
 module.exports = db;
