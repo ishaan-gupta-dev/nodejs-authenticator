@@ -65,6 +65,8 @@ To run this project, you will need to add the following environment variables to
 
 `JWT_RESET_KEY` - random key to generate JWT reset key
 
+`APP_PASS_FOR_GMAIL` - Since google has removed less secure apps, need to create app password
+
 ## Tech Stack
 
 Node.js, Express.js, MongoDB, EJS, Google APIs, JWT, Mongoose, Passport.js, Nodemailer
