@@ -136,8 +136,8 @@ module.exports.createUser = async function (req, res) {
             <p><b>NOTE: </b> The above activation link expires in 10 minutes.</p>
         `;
 
-        const accessToken = await getAccessToken();
-        console.log("accessToken",accessToken)
+        // const accessToken = await getAccessToken();
+        // console.log("accessToken",accessToken)
         const mailOptions = {
             from: `Auth Admin <${auth_email_id}>`, 
             to: email, 
